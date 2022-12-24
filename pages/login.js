@@ -1,8 +1,10 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Login from "../components/Login";
 
 export default function LoginPage() {
   const { data: session, status } = useSession();
+  console.log(session);
   const router = useRouter();
 
   if (status !== "loading" && status === "authenticated") {
@@ -10,8 +12,8 @@ export default function LoginPage() {
   }
 
   return (
-    <div>
-      <button onClick={() => signIn("github")}>Sign in with git hub</button>
-    </div>
+    <>
+      <Login signIn={signIn} />
+    </>
   );
 }

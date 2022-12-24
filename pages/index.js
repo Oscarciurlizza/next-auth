@@ -1,19 +1,11 @@
 import { getSession, signOut } from "next-auth/react";
+import Layout from "../components/Layout/Layout";
 
 export default function Home({ session }) {
   return (
-    <div>
-      {session ? (
-        <div>
-          <span>{session.user.name}</span>
-          <span>{session.user.email}</span>
-        </div>
-      ) : (
-        "skeleton"
-      )}
-
-      <button onClick={() => signOut()}>Logout</button>
-    </div>
+    <Layout title="Goi.io">
+      <h2>Homepage</h2>
+    </Layout>
   );
 }
 
