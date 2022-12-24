@@ -5,13 +5,13 @@ import {
   Bars3Icon,
   BookmarkSquareIcon,
   CalendarIcon,
-  ChartBarIcon,
   CircleStackIcon,
+  DocumentMagnifyingGlassIcon,
   LifebuoyIcon,
   PhoneIcon,
   PlayIcon,
   ShieldCheckIcon,
-  Squares2X2Icon,
+  UserGroupIcon,
   WalletIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
@@ -19,6 +19,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSession } from "next-auth/react";
 import Logo from "../Logo";
 import Profile from "./Profile";
+import Link from "next/link";
 
 const solutions = [
   {
@@ -26,7 +27,7 @@ const solutions = [
     description:
       "Get a better understanding of where your traffic is coming from.",
     href: "#",
-    icon: ChartBarIcon,
+    icon: UserGroupIcon,
   },
   {
     name: "Budget Control",
@@ -41,10 +42,10 @@ const solutions = [
     icon: CircleStackIcon,
   },
   {
-    name: "Cryptocurrency Quote",
+    name: "Drink Finder",
     description: "Connect with third-party tools that you're already using.",
-    href: "#",
-    icon: Squares2X2Icon,
+    href: "/finder",
+    icon: DocumentMagnifyingGlassIcon,
   },
   {
     name: "Automations",
@@ -104,7 +105,7 @@ function classNames(...classes) {
 export default function Header() {
   const { data: session, status } = useSession();
   return (
-    <Popover className="relative bg-white">
+    <Popover className="sm:fixed w-full bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <div className="flex items-center justify-between border-b-2 border-gray-100 py-6 md:justify-start md:space-x-10">
           <div className="flex justify-start lg:w-0 lg:flex-1">
@@ -116,193 +117,215 @@ export default function Header() {
               <Bars3Icon className="h-6 w-6" aria-hidden="true" />
             </Popover.Button>
           </div>
-          <Popover.Group
-            as="nav"
-            className="hidden space-x-10 md:flex items-center"
-          >
-            <Popover className="relative">
-              {({ open }) => (
-                <>
-                  <Popover.Button
-                    className={classNames(
-                      open ? "text-blue-600" : "text-black",
-                      "group inline-flex items-center rounded-md bg-white text-sm font-normal hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    )}
-                  >
-                    <span>Applications</span>
-                    <ChevronDownIcon
+          {session && (
+            <Popover.Group
+              as="nav"
+              className="hidden space-x-10 md:flex items-center"
+            >
+              <Popover className="relative">
+                {({ open }) => (
+                  <>
+                    <Popover.Button
                       className={classNames(
                         open ? "text-blue-600" : "text-black",
-                        "ml-2 h-5 w-5 group-hover:text-gray-500"
+                        "group inline-flex items-center rounded-md bg-white text-sm font-normal hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       )}
-                      aria-hidden="true"
-                    />
-                  </Popover.Button>
+                    >
+                      <span>Applications</span>
+                      <ChevronDownIcon
+                        className={classNames(
+                          open ? "text-blue-600" : "text-black",
+                          "ml-2 h-5 w-5 group-hover:text-gray-500"
+                        )}
+                        aria-hidden="true"
+                      />
+                    </Popover.Button>
 
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="opacity-0 translate-y-1"
-                    enterTo="opacity-100 translate-y-0"
-                    leave="transition ease-in duration-150"
-                    leaveFrom="opacity-100 translate-y-0"
-                    leaveTo="opacity-0 translate-y-1"
-                  >
-                    <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
-                      <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                        <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                          {solutions.map((item) => (
-                            <a
-                              key={item.name}
-                              href={item.href}
-                              className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-                            >
-                              <item.icon
-                                className="h-6 w-6 flex-shrink-0 text-blue-600"
-                                aria-hidden="true"
-                              />
-                              <div className="ml-4">
-                                <p className="text-sm font-normal text-gray-900">
-                                  {item.name}
-                                </p>
-                                <p className="mt-1 text-sm text-gray-500">
-                                  {item.description}
-                                </p>
-                              </div>
-                            </a>
-                          ))}
-                        </div>
-                        <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
-                          {callsToAction.map((item) => (
-                            <div key={item.name} className="flow-root">
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="opacity-0 translate-y-1"
+                      enterTo="opacity-100 translate-y-0"
+                      leave="transition ease-in duration-150"
+                      leaveFrom="opacity-100 translate-y-0"
+                      leaveTo="opacity-0 translate-y-1"
+                    >
+                      <Popover.Panel className="absolute z-10 -ml-4 mt-3 w-screen max-w-md transform px-2 sm:px-0 lg:left-1/2 lg:ml-0 lg:-translate-x-1/2">
+                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                          <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                            {solutions.map((item) => (
                               <a
+                                key={item.name}
                                 href={item.href}
-                                className="-m-3 flex items-center rounded-md p-3 text-sm font-normal text-gray-900 hover:bg-gray-100"
+                                className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
                               >
                                 <item.icon
-                                  className="h-6 w-6 flex-shrink-0 text-gray-400"
+                                  className="h-6 w-6 flex-shrink-0 text-blue-600"
                                   aria-hidden="true"
                                 />
-                                <span className="ml-3">{item.name}</span>
+                                <div className="ml-4">
+                                  <p className="text-sm font-normal text-gray-900">
+                                    {item.name}
+                                  </p>
+                                  <p className="mt-1 text-sm text-gray-500">
+                                    {item.description}
+                                  </p>
+                                </div>
                               </a>
-                            </div>
-                          ))}
+                            ))}
+                          </div>
+                          <div className="space-y-6 bg-gray-50 px-5 py-5 sm:flex sm:space-y-0 sm:space-x-10 sm:px-8">
+                            {callsToAction.map((item) => (
+                              <div key={item.name} className="flow-root">
+                                <a
+                                  href={item.href}
+                                  className="-m-3 flex items-center rounded-md p-3 text-sm font-normal text-gray-900 hover:bg-gray-100"
+                                >
+                                  <item.icon
+                                    className="h-6 w-6 flex-shrink-0 text-gray-400"
+                                    aria-hidden="true"
+                                  />
+                                  <span className="ml-3">{item.name}</span>
+                                </a>
+                              </div>
+                            ))}
+                          </div>
                         </div>
-                      </div>
-                    </Popover.Panel>
-                  </Transition>
-                </>
-              )}
-            </Popover>
+                      </Popover.Panel>
+                    </Transition>
+                  </>
+                )}
+              </Popover>
 
-            <a
-              href="#"
-              className="text-sm font-normal text-black hover:text-gray-900"
-            >
-              Docs
-            </a>
-            <a
-              href="#"
-              className="text-sm font-normal text-black hover:text-gray-900"
-            >
-              Tools
-            </a>
-            <Popover className="relative">
-              {({ open }) => (
-                <>
-                  <Popover.Button
-                    className={classNames(
-                      open ? "text-blue-600" : "text-black",
-                      "group inline-flex items-center rounded-md bg-white text-sm font-normal hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    )}
-                  >
-                    <span>Technologies</span>
-                    <ChevronDownIcon
+              <a
+                href="#"
+                className="text-sm font-normal text-black hover:text-gray-900"
+              >
+                Docs
+              </a>
+              <a
+                href="#"
+                className="text-sm font-normal text-black hover:text-gray-900"
+              >
+                Tools
+              </a>
+              <Popover className="relative">
+                {({ open }) => (
+                  <>
+                    <Popover.Button
                       className={classNames(
                         open ? "text-blue-600" : "text-black",
-                        "ml-2 h-5 w-5 group-hover:text-gray-500"
+                        "group inline-flex items-center rounded-md bg-white text-sm font-normal hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
                       )}
-                      aria-hidden="true"
-                    />
-                  </Popover.Button>
+                    >
+                      <span>Technologies</span>
+                      <ChevronDownIcon
+                        className={classNames(
+                          open ? "text-blue-600" : "text-black",
+                          "ml-2 h-5 w-5 group-hover:text-gray-500"
+                        )}
+                        aria-hidden="true"
+                      />
+                    </Popover.Button>
 
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-200"
-                    enterFrom="opacity-0 translate-y-1"
-                    enterTo="opacity-100 translate-y-0"
-                    leave="transition ease-in duration-150"
-                    leaveFrom="opacity-100 translate-y-0"
-                    leaveTo="opacity-0 translate-y-1"
-                  >
-                    <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
-                      <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
-                        <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
-                          {resources.map((item) => (
-                            <a
-                              key={item.name}
-                              href={item.href}
-                              className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
-                            >
-                              <item.icon
-                                className="h-6 w-6 flex-shrink-0 text-blue-600"
-                                aria-hidden="true"
-                              />
-                              <div className="ml-4">
-                                <p className="text-sm font-normal text-gray-900">
-                                  {item.name}
-                                </p>
-                                <p className="mt-1 text-sm text-gray-500">
-                                  {item.description}
-                                </p>
-                              </div>
-                            </a>
-                          ))}
-                        </div>
-                        <div className="bg-gray-50 px-5 py-5 sm:px-8 sm:py-8">
-                          <div>
-                            <h3 className="text-sm font-normal text-gray-500">
-                              Recent Posts
-                            </h3>
-                            <ul role="list" className="mt-4 space-y-4">
-                              {recentPosts.map((post) => (
-                                <li key={post.id} className="truncate text-sm">
-                                  <a
-                                    href={post.href}
-                                    className="font-normal text-gray-900 hover:text-gray-700"
+                    <Transition
+                      as={Fragment}
+                      enter="transition ease-out duration-200"
+                      enterFrom="opacity-0 translate-y-1"
+                      enterTo="opacity-100 translate-y-0"
+                      leave="transition ease-in duration-150"
+                      leaveFrom="opacity-100 translate-y-0"
+                      leaveTo="opacity-0 translate-y-1"
+                    >
+                      <Popover.Panel className="absolute left-1/2 z-10 mt-3 w-screen max-w-md -translate-x-1/2 transform px-2 sm:px-0">
+                        <div className="overflow-hidden rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
+                          <div className="relative grid gap-6 bg-white px-5 py-6 sm:gap-8 sm:p-8">
+                            {resources.map((item) => (
+                              <a
+                                key={item.name}
+                                href={item.href}
+                                className="-m-3 flex items-start rounded-lg p-3 hover:bg-gray-50"
+                              >
+                                <item.icon
+                                  className="h-6 w-6 flex-shrink-0 text-blue-600"
+                                  aria-hidden="true"
+                                />
+                                <div className="ml-4">
+                                  <p className="text-sm font-normal text-gray-900">
+                                    {item.name}
+                                  </p>
+                                  <p className="mt-1 text-sm text-gray-500">
+                                    {item.description}
+                                  </p>
+                                </div>
+                              </a>
+                            ))}
+                          </div>
+                          <div className="bg-gray-50 px-5 py-5 sm:px-8 sm:py-8">
+                            <div>
+                              <h3 className="text-sm font-normal text-gray-500">
+                                Recent Posts
+                              </h3>
+                              <ul role="list" className="mt-4 space-y-4">
+                                {recentPosts.map((post) => (
+                                  <li
+                                    key={post.id}
+                                    className="truncate text-sm"
                                   >
-                                    {post.name}
-                                  </a>
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div className="mt-5 text-sm">
-                            <a
-                              href="#"
-                              className="font-normal text-blue-600 hover:text-blue-500"
-                            >
-                              View all posts
-                              <span aria-hidden="true"> &rarr;</span>
-                            </a>
+                                    <a
+                                      href={post.href}
+                                      className="font-normal text-gray-900 hover:text-gray-700"
+                                    >
+                                      {post.name}
+                                    </a>
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
+                            <div className="mt-5 text-sm">
+                              <a
+                                href="#"
+                                className="font-normal text-blue-600 hover:text-blue-500"
+                              >
+                                View all posts
+                                <span aria-hidden="true"> &rarr;</span>
+                              </a>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Popover.Panel>
-                  </Transition>
-                </>
-              )}
-            </Popover>
-          </Popover.Group>
+                      </Popover.Panel>
+                    </Transition>
+                  </>
+                )}
+              </Popover>
+            </Popover.Group>
+          )}
           <div className="hidden items-center justify-end md:flex md:flex-1 lg:w-0">
             {!session ? (
               <>
-                <button className="whitespace-nowrap text-sm font-normal text-gray-500 hover:text-gray-900">
-                  Sign in
-                </button>
-                <button className="ml-8 inline-flex items-center justify-center whitespace-nowrap rounded-md border border-transparent bg-blue-600 px-4 py-2 text-sm font-normal text-white shadow-sm hover:bg-blue-700">
-                  Sign up
-                </button>
+                <Link href="/">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="15"
+                    height="16"
+                    viewBox="0 0 21 21"
+                    fill="none"
+                  >
+                    <g clipPath="url(#clip0_21_7231)">
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M10.48 0C4.6898 0 0 4.6898 0 10.48C0 15.1174 2.9999 19.0343 7.1657 20.4229C7.6897 20.5146 7.8862 20.2002 7.8862 19.9251C7.8862 19.6762 7.8731 18.8509 7.8731 17.9732C5.24 18.4579 4.5588 17.3313 4.3492 16.7418C4.2313 16.4405 3.7204 15.5104 3.275 15.2615C2.9082 15.065 2.3842 14.5803 3.2619 14.5672C4.0872 14.5541 4.6767 15.327 4.8732 15.6414C5.8164 17.2265 7.3229 16.7811 7.9255 16.506C8.0172 15.8248 8.2923 15.3663 8.5936 15.1043C6.2618 14.8423 3.8252 13.9384 3.8252 9.9298C3.8252 8.7901 4.2313 7.8469 4.8994 7.1133C4.7946 6.8513 4.4278 5.7771 5.0042 4.3361C5.0042 4.3361 5.8819 4.061 7.8862 5.4103C8.7246 5.1745 9.6154 5.0566 10.5062 5.0566C11.397 5.0566 12.2878 5.1745 13.1262 5.4103C15.1305 4.0479 16.0082 4.3361 16.0082 4.3361C16.5846 5.7771 16.2178 6.8513 16.113 7.1133C16.7811 7.8469 17.1872 8.777 17.1872 9.9298C17.1872 13.9515 14.7375 14.8423 12.4057 15.1043C12.7856 15.4318 13.1131 16.0606 13.1131 17.0431C13.1131 18.4448 13.1 19.5714 13.1 19.9251C13.1 20.2002 13.2965 20.5277 13.8205 20.4229C17.9601 19.0343 20.96 15.1043 20.96 10.48C20.96 4.6898 16.2702 0 10.48 0Z"
+                        fill="black"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_21_7231">
+                        <rect width="20.96" height="20.96" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </Link>
               </>
             ) : (
               <Profile session={session} />

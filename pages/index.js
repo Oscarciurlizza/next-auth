@@ -1,4 +1,4 @@
-import { getSession, signOut } from "next-auth/react";
+import { getSession } from "next-auth/react";
 import Layout from "../components/Layout/Layout";
 
 export default function Home({ session }) {

@@ -1,19 +1,20 @@
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Home from ".";
+import Layout from "../components/Layout/Layout";
 import Login from "../components/Login";
 
 export default function LoginPage() {
-  const { data: session, status } = useSession();
-  console.log(session);
   const router = useRouter();
-
-  if (status !== "loading" && status === "authenticated") {
+  const { status } = useSession();
+  if (status === "authenticated") {
     router.push("/");
   }
-
-  return (
-    <>
-      <Login signIn={signIn} />
-    </>
-  );
+  if (status === "unauthenticated") {
+    return (
+      <Layout ti tle="Goi - Login">
+        <Login signIn={signIn} />
+      </Layout>
+    );
+  }
 }
